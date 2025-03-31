@@ -4,22 +4,19 @@ package br.com.videoextractor.controller
 import br.com.videoextractor.adapters.mongodb.repository.entities.OriginalVideo
 import br.com.videoextractor.adapters.mongodb.repository.entities.ProcessedFrame
 import br.com.videoextractor.core.service.GetVideosService
-import br.com.videoextractor.core.service.VideoPathGeneratorService
+import br.com.videoextractor.core.service.VideoPathGeneratorServiceTest
 import br.com.videoextractor.controller.response.PresignedUrl
 import br.com.videoextractor.adapters.mongodb.repository.entities.VideoProcessingTaskEntity
+import br.com.videoextractor.core.service.VideoPathGeneratorService
 import br.com.videoextractor.domain.VideoProcessStatus
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.whenever
-import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 @ExtendWith(MockitoExtension::class)
 class VideoExtractorControllerTest {

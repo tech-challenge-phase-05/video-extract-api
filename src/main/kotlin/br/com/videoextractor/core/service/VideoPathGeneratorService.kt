@@ -1,7 +1,6 @@
 package br.com.videoextractor.core.service
 
 import br.com.videoextractor.adapters.S3.S3Adapter
-import br.com.videoextractor.domain.ProcessingTask
 import org.springframework.stereotype.Service
 import java.util.*
 

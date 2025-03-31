@@ -32,7 +32,6 @@ class S3Adapter(
                 .putObjectRequest(objectRequest)
                 .build()
 
-
             val presignedRequest = presigner.presignPutObject(presignRequest)
             val myURL = presignedRequest.url().toString()
             val method = presignedRequest.httpRequest().method()

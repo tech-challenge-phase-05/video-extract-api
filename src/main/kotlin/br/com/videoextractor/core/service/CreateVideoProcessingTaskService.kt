@@ -35,6 +35,6 @@ class CreateVideoProcessingTaskService(
         user.allProcessingTasks = user.allProcessingTasks.plus(videoProcessingTask)
         val newUser = userRepositoryPort.saveUser(user)
         logger.info("User saved successfully, saved User: $newUser")
-        return videoProcessingTask
+        return newVideoProcessingTask
     }
 }
