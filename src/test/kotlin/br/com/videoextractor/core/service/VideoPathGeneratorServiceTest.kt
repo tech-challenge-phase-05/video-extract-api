@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.whenever
+import java.time.LocalDateTime
 
 @ExtendWith(MockitoExtension::class)
 class VideoPathGeneratorServiceTest {
@@ -40,7 +41,7 @@ class VideoPathGeneratorServiceTest {
             VideoProcessingTaskEntity(
                 videoUuid,
                 OriginalVideo(videoUuid, "http://example.com/presigned-url", "fileName"),
-                ProcessedFrame(videoUuid, "http://example.com/presigned-url", "fileName", 1, 5),
+                ProcessedFrame(videoUuid, "http://example.com/presigned-url", LocalDateTime.now(), "fileName", 1, 5),
                 VideoProcessStatus.PENDING
             )
         )
