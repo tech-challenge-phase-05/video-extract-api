@@ -1,6 +1,5 @@
 package br.com.videoextractor.core.service
 
-import br.com.videoextractor.adapters.S3.S3Adapter
 import br.com.videoextractor.adapters.mongodb.repository.entities.OriginalVideo
 import br.com.videoextractor.adapters.mongodb.repository.entities.ProcessedFrame
 import br.com.videoextractor.adapters.mongodb.repository.entities.VideoProcessingTaskEntity
