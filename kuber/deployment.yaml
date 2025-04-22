@@ -25,12 +25,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: mongo-config
-          volumeMounts:
-            - name: documentdb-cert-volume
-              mountPath: "/tmp/certs"
-              readOnly: true
-            - name: certs-dir
-              mountPath: "/certs"
           livenessProbe:
             httpGet:
               path: /actuator/health
