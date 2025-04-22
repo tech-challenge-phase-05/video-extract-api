@@ -17,8 +17,8 @@ WORKDIR /app
 # Diretório de certificados (opcional)
 RUN mkdir -p /etc/certs
 
-# Copia o JAR gerado na fase anterior
-COPY --from=build /app/target/video-extractor-*.jar video-extractor-api.jar
+# Copia o JAR gerado na fase anterior (nome correto com base no pom.xml)
+COPY --from=build /app/target/videoextractorapi-0.0.1-SNAPSHOT.jar video-extractor-api.jar
 
 # Expõe a porta padrão
 EXPOSE 8080

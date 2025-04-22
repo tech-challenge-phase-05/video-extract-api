@@ -9,7 +9,7 @@
 		<relativePath/>
 	</parent>
 	<groupId>br.com.videoextractor</groupId>
-	<artifactId>videoextractor</artifactId>
+	<artifactId>videoextractorapi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>demo</name>
 	<description>Video Extractor Api</description>
