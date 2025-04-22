@@ -4,6 +4,7 @@ import br.com.videoextractor.adapters.S3.S3Adapter
 import br.com.videoextractor.adapters.mongodb.repository.entities.OriginalVideo
 import br.com.videoextractor.adapters.mongodb.repository.entities.ProcessedFrame
 import br.com.videoextractor.adapters.mongodb.repository.entities.VideoProcessingTaskEntity
+import br.com.videoextractor.adapters.s3.S3Adapter
 import br.com.videoextractor.domain.VideoProcessStatus
 import br.com.videoextractor.domain.VideoProcessingData
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -36,7 +37,7 @@ class VideoPathGeneratorServiceTest {
         val videoProcessingData = VideoProcessingData(presignedUrl, "bucket", "fileName")
         val videoUuid = "uuid generated"
 
-        whenever(s3Adapter.generatePresignedUrl(any())).thenReturn(videoProcessingData)
+        whenever(s3Adapter.generateUploadPresignedUrl(any())).thenReturn(videoProcessingData)
         whenever(userManagerService.createNewVideoRecord(eq(clientId), any(), eq(videoProcessingData))).thenReturn(
             VideoProcessingTaskEntity(
                 videoUuid,
