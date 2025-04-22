@@ -4,6 +4,7 @@ import br.com.videoextractor.adapters.mongodb.repository.entities.OriginalVideo
 import br.com.videoextractor.adapters.mongodb.repository.entities.ProcessedFrame
 import br.com.videoextractor.adapters.mongodb.repository.entities.VideoProcessingTaskEntity
 import br.com.videoextractor.adapters.mongodb.repository.port.VideoProcessingTaskRepositoryPort
+import br.com.videoextractor.adapters.s3.S3Adapter
 import br.com.videoextractor.controller.message.UpdateVideoTaskMessage
 import br.com.videoextractor.core.service.exception.NotFoundException
 import br.com.videoextractor.domain.VideoProcessStatus
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.kotlin.any
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.time.LocalDateTime
@@ -23,6 +25,9 @@ class UpdateTaskProcessServiceTest {
 
     @Mock
     private lateinit var videoProcessingTaskRepository: VideoProcessingTaskRepositoryPort
+
+    @Mock
+    private  lateinit var s3Adapter: S3Adapter;
 
     @InjectMocks
     private lateinit var updateTaskProcessService: UpdateTaskProcessService
@@ -37,7 +42,7 @@ class UpdateTaskProcessServiceTest {
     fun `should update task status`() {
         val newStatus = VideoProcessStatus.FINISHED
         whenever(videoProcessingTaskRepository.findById(taskId)).thenReturn(videoTask)
-
+        whenever(s3Adapter.generateDownloadPresignedUrl(any())).thenReturn("url");
         updateTaskProcessService.updateTaskProcess(
             UpdateVideoTaskMessage(
                 taskId, "http://example.com/video.mp4", VideoProcessStatus.PROCESSING
@@ -50,6 +55,7 @@ class UpdateTaskProcessServiceTest {
     fun `should keep attributes of videoTask`() {
         val old = VideoProcessingTaskEntity(taskId, originalVideo, processedFrame, VideoProcessStatus.PENDING)
         val newStatus = VideoProcessStatus.ERROR
+        whenever(s3Adapter.generateDownloadPresignedUrl(any())).thenReturn("url");
 
         whenever(videoProcessingTaskRepository.findById(taskId)).thenReturn(old)
 
@@ -65,6 +71,7 @@ class UpdateTaskProcessServiceTest {
     @Test
     fun `should throw exception when task not found`() {
         whenever(videoProcessingTaskRepository.findById(taskId)).thenReturn(null)
+        whenever(s3Adapter.generateDownloadPresignedUrl(any())).thenReturn("url");
 
         val result = assertThrows<NotFoundException> {
             updateTaskProcessService.updateTaskProcess(
