@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: mongo-secret
-  namespace: video-extractor-api
+  namespace: video-extractor
 data:
   MONGO_URI: "bW9uZ29kYitzcnY6Ly9sYW5jaG9uZXRlOmJnbHVhd21sMUBjbHVzdGVyMC41eHdmaXJuLm1vbmdvZGIubmV0Lz9yZXRyeVdyaXRlcz10cnVlJnc9bWFqb3JpdHkmYXBwTmFtZT1DbHVzdGVyMA=="
 ---
@@ -10,6 +10,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: order-config
-  namespace: video-extractor-api
+  namespace: video-extractor
 data:
   ORDER_URL: http://aecceb46beb6b431c8fd64ecbbf09bc8-1231354151.us-east-1.elb.amazonaws.com
