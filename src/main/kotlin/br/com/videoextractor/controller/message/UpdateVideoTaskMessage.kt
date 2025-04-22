@@ -4,7 +4,6 @@ import br.com.videoextractor.domain.VideoProcessStatus
 
 data class UpdateVideoTaskMessage(
     val videoId: String,
-    val processedVideoUrl: String?,
-    val fileName: String?,
+    val processedFileKey: String?,
     val status: VideoProcessStatus
 )

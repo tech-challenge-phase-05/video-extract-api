@@ -1,6 +1,6 @@
 package br.com.videoextractor.core.service
 
-import br.com.videoextractor.adapters.S3.S3Adapter
+import br.com.videoextractor.adapters.s3.S3Adapter
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -11,7 +11,7 @@ class VideoPathGeneratorService(
 ) {
     fun generatePath(idCliente: String):String {
         val videoUuid = UUID.randomUUID().toString()
-        val videoProcessingData = s3Adapter.generatePresignedUrl(videoUuid)
+        val videoProcessingData = s3Adapter.generateUploadPresignedUrl(videoUuid)
         userManagerService.createNewVideoRecord(idCliente,videoUuid, videoProcessingData)
         return videoProcessingData.presignedUrl
     }

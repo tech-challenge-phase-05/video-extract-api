@@ -9,6 +9,7 @@ import br.com.videoextractor.adapters.mongodb.repository.port.VideoProcessingTas
 import br.com.videoextractor.domain.VideoProcessStatus
 import br.com.videoextractor.domain.VideoProcessingData
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 import java.util.*
 import java.util.logging.Logger
 
@@ -27,7 +28,7 @@ class CreateVideoProcessingTaskService(
                 fileName = videoProcessingData.key
             ),
             status = VideoProcessStatus.PENDING,
-            processedFrame = ProcessedFrame(startTime = 0, endTime = 5)
+            processedFrame = ProcessedFrame(startTime = 0, endTime = 5, lastUpdatedUrlDt = LocalDateTime.now())
         )
         logger.info("Creating new register for VideoProcessingTask $videoProcessingTask")
         val newVideoProcessingTask = videoProcessingTaskPort.save(videoProcessingTask)

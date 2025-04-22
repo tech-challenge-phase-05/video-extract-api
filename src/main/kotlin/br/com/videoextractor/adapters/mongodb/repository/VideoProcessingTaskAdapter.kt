@@ -9,7 +9,7 @@ class VideoProcessingTaskAdapter(
     private val videoProcessingTaskRepository: VideoProcessingTaskRepository
 ): VideoProcessingTaskRepositoryPort {
     override fun findById(id:String): VideoProcessingTaskEntity? {
-        return videoProcessingTaskRepository.findById(id).get()
+        return videoProcessingTaskRepository.findByOriginalVideo_Id(id)
     }
     override fun save(videoProcessingTaskEntity: VideoProcessingTaskEntity): VideoProcessingTaskEntity {
         return videoProcessingTaskRepository.save(videoProcessingTaskEntity)

@@ -6,4 +6,6 @@ import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface VideoProcessingTaskRepository: MongoRepository<VideoProcessingTaskEntity, String>
+interface VideoProcessingTaskRepository: MongoRepository<VideoProcessingTaskEntity, String>{
+    fun findByOriginalVideo_Id(videoId: String): VideoProcessingTaskEntity?
+}

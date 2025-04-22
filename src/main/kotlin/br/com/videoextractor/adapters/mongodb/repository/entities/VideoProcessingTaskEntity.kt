@@ -2,6 +2,7 @@ package br.com.videoextractor.adapters.mongodb.repository.entities
 
 import br.com.videoextractor.domain.VideoProcessStatus
 import org.springframework.data.mongodb.core.mapping.Document
+import java.time.LocalDateTime
 
 @Document("videoProcessingTaskDocument")
 data class VideoProcessingTaskEntity (
@@ -20,6 +21,7 @@ data class  OriginalVideo(
 data class ProcessedFrame(
     var id: String? = null,
     var url: String? = null,
+    var lastUpdatedUrlDt: LocalDateTime? = null,
     var fileName: String?= null,
     val startTime: Long,
     val endTime:Long

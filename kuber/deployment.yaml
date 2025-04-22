@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: video-extractor-api
+  namespace: video-extractor-api
+  labels:
+    app: video-extractor-api
+    environment: production
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: video-extractor-api
+  template:
+    metadata:
+      labels:
+        app: video-extractor-api
+    spec:
+      serviceAccountName: video-extractor-api-service-account
+      volumes:
+        - name: documentdb-cert-volume
+          secret:
+            secretName: documentdb-cert
+            optional: false
+        - name: certs-dir
+          emptyDir: {}
+      containers:
+        - name: video-extractor-api
+          image: <ECR_REPOSITORY_URL>:latest
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: mongo-config
+          volumeMounts:
+            - name: documentdb-cert-volume
+              mountPath: "/tmp/certs"
+              readOnly: true
+            - name: certs-dir
+              mountPath: "/certs"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 120
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 120
+            periodSeconds: 10
+          env:
+            - name: ORDER_INTEGRATION_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: order-config
+                  key: ORDER_URL
+            - name: SPRING_DATA_MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_URI
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "300m"
+            requests:
+              memory: "256Mi"
+              cpu: "300m"
+          command: ["/bin/sh", "-c"]
+          args:
+            - "exec java $JAVA_OPTS -Djavax.net.debug=ssl -jar video-extractor-api-app.jar"
+
+
+
+

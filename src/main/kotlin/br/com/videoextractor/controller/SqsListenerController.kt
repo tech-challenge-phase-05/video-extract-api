@@ -11,7 +11,7 @@ class SqsListenerController(
     val updateTaskProcessService: UpdateTaskProcessService,
 ) {
     val logger = Logger.getLogger(this.javaClass.name)
-    @SqsListener(value = ["\${video-extractor.queue.name}"])
+    @SqsListener(value = ["\${file-uploaded.queue.url}"])
     fun receiveMessage(updateMessage: UpdateVideoTaskMessage) {
         logger.info("Updating task process with the following message: $updateMessage")
         updateTaskProcessService.updateTaskProcess(updateMessage)
