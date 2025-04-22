@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: video-extractor-api
-  namespace: video-extractor-api
+  namespace: video-extractor
   labels:
     app: video-extractor-api
     environment: production
