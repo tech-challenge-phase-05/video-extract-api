@@ -22,9 +22,6 @@ spec:
           image: <ECR_REPOSITORY_URL>:latest
           ports:
             - containerPort: 8080
-          envFrom:
-            - configMapRef:
-                name: mongo-config
           livenessProbe:
             httpGet:
               path: /actuator/health
@@ -38,11 +35,6 @@ spec:
             initialDelaySeconds: 120
             periodSeconds: 10
           env:
-            - name: ORDER_INTEGRATION_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: order-config
-                  key: ORDER_URL
             - name: SPRING_DATA_MONGODB_URI
               valueFrom:
                 secretKeyRef:
