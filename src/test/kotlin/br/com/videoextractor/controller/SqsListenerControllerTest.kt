@@ -24,14 +24,14 @@ class SqsListenerControllerTest {
 
     @Test
     fun `should process SQS message`() {
-        val updateVideo = UpdateVideoTaskMessage("1","http://example.com/video.mp4", "video.mp4", VideoProcessStatus.FINISHED)
+        val updateVideo = UpdateVideoTaskMessage("1","http://example.com/video.mp4",  VideoProcessStatus.FINISHED)
         sqsListenerController.receiveMessage(updateVideo)
         verify(updateTaskProcessService).updateTaskProcess(updateVideo)
     }
 
     @Test
     fun `should handle SQS message processing failure`() {
-        val updateVideo = UpdateVideoTaskMessage("1","http://example.com/video.mp4", "video.mp4", VideoProcessStatus.FINISHED)
+        val updateVideo = UpdateVideoTaskMessage("1","http://example.com/video.mp4",  VideoProcessStatus.FINISHED)
         doThrow(RuntimeException()).whenever(updateTaskProcessService).updateTaskProcess(updateVideo)
         assertFailsWith<RuntimeException> {
             sqsListenerController.receiveMessage(updateVideo)
