@@ -17,13 +17,6 @@ spec:
         app: video-extractor-api
     spec:
       serviceAccountName: video-extractor-api-service-account
-      volumes:
-        - name: documentdb-cert-volume
-          secret:
-            secretName: documentdb-cert
-            optional: false
-        - name: certs-dir
-          emptyDir: {}
       containers:
         - name: video-extractor-api
           image: <ECR_REPOSITORY_URL>:latest
@@ -69,8 +62,6 @@ spec:
               memory: "256Mi"
               cpu: "300m"
           command: ["/bin/sh", "-c"]
-          args:
-            - "exec java $JAVA_OPTS -Djavax.net.debug=ssl -jar video-extractor-api-app.jar"
 
 
 
