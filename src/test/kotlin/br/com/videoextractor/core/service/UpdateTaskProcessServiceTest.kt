@@ -16,6 +16,7 @@ import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import java.time.LocalDateTime
 
 @ExtendWith(MockitoExtension::class)
 class UpdateTaskProcessServiceTest {
@@ -28,7 +29,7 @@ class UpdateTaskProcessServiceTest {
 
     val taskId = "1"
     val originalVideo = OriginalVideo("3", "http://example.com/video.mp4", "video.mp4")
-    val processedFrame = ProcessedFrame("5", "http://example.com/processed.mp4", "processed.mp4", 1, 5)
+    val processedFrame = ProcessedFrame("5", "http://example.com/processed.mp4", LocalDateTime.now(), "processed.mp4", 1, 5)
     val videoTask = VideoProcessingTaskEntity(taskId, originalVideo, processedFrame, VideoProcessStatus.PENDING)
 
 
@@ -39,7 +40,7 @@ class UpdateTaskProcessServiceTest {
 
         updateTaskProcessService.updateTaskProcess(
             UpdateVideoTaskMessage(
-                taskId, "http://example.com/video.mp4", "video.mp4", newStatus
+                taskId, "http://example.com/video.mp4", VideoProcessStatus.PROCESSING
             )
         )
 
@@ -54,7 +55,7 @@ class UpdateTaskProcessServiceTest {
 
         updateTaskProcessService.updateTaskProcess(
             UpdateVideoTaskMessage(
-                taskId, "http://example.com/newVideo.mp4", "newVideo.mp4", newStatus
+                taskId, "http://example.com/newVideo.mp4", newStatus
             )
         )
 
@@ -68,7 +69,7 @@ class UpdateTaskProcessServiceTest {
         val result = assertThrows<NotFoundException> {
             updateTaskProcessService.updateTaskProcess(
                 UpdateVideoTaskMessage(
-                    taskId, "http://example.com/video.mp4", "video.mp4", VideoProcessStatus.FINISHED
+                    taskId, "http://example.com/video.mp4", VideoProcessStatus.FINISHED
                 )
             )
         }
