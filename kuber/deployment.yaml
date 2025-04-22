@@ -47,7 +47,6 @@ spec:
             requests:
               memory: "256Mi"
               cpu: "300m"
-          command: ["/bin/sh", "-c"]
 
 
 
