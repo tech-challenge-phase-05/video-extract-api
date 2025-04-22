@@ -1,0 +1,75 @@
+name: Deploy Application to EKS
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  security-events: write
+
+env:
+  AWS_REGION: us-east-1
+  IMAGE_URI: ${{ vars.ECR_REPOSITORY_URL }}
+  CLUSTER_NAME: ${{ vars.CLUSTER_NAME }}
+
+jobs:
+  dockerize:
+    name: Dockerize Application
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Debug AWS Secrets
+        run: |
+          echo "AWS_ACCESS_KEY_ID is set: ${{ secrets.AWS_ACCESS_KEY_ID != '' }}"
+          echo "AWS_SECRET_ACCESS_KEY is set: ${{ secrets.AWS_SECRET_ACCESS_KEY != '' }}"
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and Push Docker Image
+        run: |
+          echo "Using IMAGE_URI: $IMAGE_URI"
+          docker build -t $IMAGE_URI .
+          docker push $IMAGE_URI
+
+  deploy:
+    name: Deploy to EKS
+    runs-on: ubuntu-latest
+    needs: dockerize
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Configure kubectl
+        run: |
+          aws eks update-kubeconfig --region $AWS_REGION --name $CLUSTER_NAME
+
+      - name: Deploy to EKS
+        run: |
+          sed -i "s|<ECR_REPOSITORY_URL>|$IMAGE_URI|g" kuber/deployment.yaml
+          kubectl apply -f kuber/namespace.yaml
+          kubectl apply -f kuber/service-account.yaml
+          kubectl apply -f kuber/configmap.yaml
+          kubectl apply -f kuber/service.yaml 
+          kubectl apply -f kuber/hpa.yaml 
+          kubectl apply -f kuber/deployment.yaml
