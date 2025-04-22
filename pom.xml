@@ -99,6 +99,7 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 			<version>3.4.4</version>
 		</dependency>
+
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -116,6 +117,35 @@
 		<sourceDirectory>src/main/kotlin</sourceDirectory>
 		<testSourceDirectory>src/test/kotlin</testSourceDirectory>
 		<plugins>
+			<!-- JaCoCo para cobertura -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.10</version>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- SonarQube -->
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>3.11.0.3922</version>
+			</plugin>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -159,5 +189,14 @@
 			</plugin>
 		</plugins>
 	</build>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.10</version>
+			</plugin>
+		</plugins>
+	</reporting>
 
 </project>
